@@ -17,19 +17,18 @@ class TestPIIDetection:
         text = "Bệnh nhân Nguyen Van A, CCCD: 012345678901"
         results = anonymizer.analyzer.analyze(text=text, language="vi",
                                                entities=["VN_CCCD"])
-        assert len(results) > 0
+        # TODO: assert rằng có ít nhất 1 result
+        assert ___
 
     def test_phone_detected(self, anonymizer):
         text = "Liên hệ: 0912345678"
-        results = anonymizer.analyzer.analyze(text=text, language="vi",
-                                               entities=["VN_PHONE"])
-        assert len(results) > 0
+        # TODO: viết test tương tự
+        pass
 
     def test_email_detected(self, anonymizer):
         text = "Email: nguyenvana@gmail.com"
-        results = anonymizer.analyzer.analyze(text=text, language="vi",
-                                               entities=["EMAIL_ADDRESS"])
-        assert len(results) > 0
+        # TODO: viết test
+        pass
 
     # --- TASK QUAN TRỌNG ---
     def test_detection_rate_above_95_percent(self, anonymizer, sample_df):
@@ -45,10 +44,11 @@ class TestAnonymization:
         """Sau anonymization, không còn CCCD gốc trong output."""
         df_anon = anonymizer.anonymize_dataframe(sample_df)
         for original_cccd in sample_df["cccd"]:
-            assert str(original_cccd) not in df_anon.to_string()
+            # TODO: assert CCCD gốc không xuất hiện trong df_anon
+            assert str(original_cccd) not in ___
 
     def test_non_pii_columns_unchanged(self, anonymizer, sample_df):
         """Cột benh và ket_qua_xet_nghiem phải giữ nguyên."""
         df_anon = anonymizer.anonymize_dataframe(sample_df)
-        assert df_anon["benh"].tolist() == sample_df["benh"].tolist()
-        assert df_anon["ket_qua_xet_nghiem"].tolist() == sample_df["ket_qua_xet_nghiem"].tolist()
+        # TODO: assert hai cột này không thay đổi
+        pass

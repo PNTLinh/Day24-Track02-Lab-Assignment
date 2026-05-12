@@ -1,6 +1,4 @@
 # src/api/main.py
-from pathlib import Path
-
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.responses import JSONResponse
 import pandas as pd
@@ -9,21 +7,6 @@ from src.pii.anonymizer import MedVietAnonymizer
 
 app = FastAPI(title="MedViet Data API", version="1.0.0")
 anonymizer = MedVietAnonymizer()
-DATA_PATH = Path(__file__).resolve().parents[2] / "data" / "raw" / "patients_raw.csv"
-
-
-def _load_patients_df() -> pd.DataFrame:
-    return pd.read_csv(DATA_PATH)
-
-
-@app.get("/")
-async def root():
-    return {
-        "service": "MedViet Data API",
-        "status": "running",
-        "docs": "/docs",
-        "health": "/health",
-    }
 
 # --- ENDPOINT 1 ---
 @app.get("/api/patients/raw")
@@ -36,8 +19,7 @@ async def get_raw_patients(
     Load từ data/raw/patients_raw.csv
     Trả về 10 records đầu tiên dưới dạng JSON.
     """
-    df = _load_patients_df().head(10)
-    return JSONResponse(content=df.to_dict(orient="records"))
+    pass
 
 # --- ENDPOINT 2 ---
 @app.get("/api/patients/anonymized")
@@ -49,9 +31,7 @@ async def get_anonymized_patients(
     TODO: Trả về anonymized data (ml_engineer và admin được phép).
     Load raw data → anonymize → trả về JSON.
     """
-    df = _load_patients_df().head(10)
-    df_anon = anonymizer.anonymize_dataframe(df)
-    return JSONResponse(content=df_anon.to_dict(orient="records"))
+    pass
 
 # --- ENDPOINT 3 ---
 @app.get("/api/metrics/aggregated")
@@ -63,14 +43,7 @@ async def get_aggregated_metrics(
     TODO: Trả về aggregated metrics (data_analyst, ml_engineer, admin).
     Ví dụ: số bệnh nhân theo từng loại bệnh (không có PII).
     """
-    df = _load_patients_df()
-    metrics = (
-        df.groupby("benh")
-        .size()
-        .reset_index(name="patient_count")
-        .sort_values("benh")
-    )
-    return JSONResponse(content=metrics.to_dict(orient="records"))
+    pass
 
 # --- ENDPOINT 4 ---
 @app.delete("/api/patients/{patient_id}")
@@ -82,7 +55,7 @@ async def delete_patient(
     """
     TODO: Chỉ admin được xóa. Các role khác nhận 403.
     """
-    return {"status": "deleted", "patient_id": patient_id}
+    pass
 
 @app.get("/health")
 async def health():

@@ -1,13 +1,15 @@
 # src/encryption/vault.py
 import os
 import base64
-import pandas as pd
+import hashlib
 from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.backends import default_backend
 
 class SimpleVault:
     """
     Mô phỏng envelope encryption pattern (thay thế AWS KMS cho local dev).
-
+    
     Architecture:
         Master Key (KEK) → encrypts → Data Key (DEK) → encrypts → Data
     """
@@ -18,7 +20,7 @@ class SimpleVault:
 
     def _load_or_create_kek(self) -> bytes:
         """
-        TODO: Load KEK từ file nếu tồn tại,
+        TODO: Load KEK từ file nếu tồn tại, 
               ngược lại generate 32-byte random key và lưu vào file.
         QUAN TRỌNG: Trong production, KEK phải lưu trong HSM/KMS, không phải file.
         """
@@ -63,7 +65,7 @@ class SimpleVault:
         2. Encrypt data bằng plaintext DEK
         3. Xóa plaintext DEK khỏi memory
         4. Trả về dict chứa encrypted_dek và ciphertext (base64 encoded)
-
+        
         Return format:
         {
             "encrypted_dek": "<base64>",
@@ -76,7 +78,7 @@ class SimpleVault:
         # TODO: encrypt data bằng plaintext_dek
         aesgcm = AESGCM(plaintext_dek)
         nonce = os.urandom(12)
-        ciphertext = aesgcm.encrypt(nonce, plaintext.encode(), None)
+        ciphertext = ___   # TODO
 
         # Xóa plaintext DEK
         del plaintext_dek
@@ -98,9 +100,9 @@ class SimpleVault:
         ciphertext_with_nonce = base64.b64decode(encrypted_payload["ciphertext"])
 
         # TODO: implement decryption
-        plaintext_dek = self.decrypt_dek(encrypted_dek)
-        nonce = ciphertext_with_nonce[:12]
-        ciphertext = ciphertext_with_nonce[12:]
+        plaintext_dek = ___   # TODO
+        nonce = ___           # TODO (first 12 bytes)
+        ciphertext = ___      # TODO (remaining bytes)
 
         aesgcm = AESGCM(plaintext_dek)
         plaintext = aesgcm.decrypt(nonce, ciphertext, None)
