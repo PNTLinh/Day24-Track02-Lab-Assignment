@@ -1,0 +1,30 @@
+# Tạo file .gitignore (nếu chưa có)
+@"
+# Encryption keys (development only)
+.vault_key
+.vault_key_test
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Virtual environment
+venv/
+day24/
+
+# Environment variables
+.env
+.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+"@ | Out-File -Encoding UTF8 .gitignore
